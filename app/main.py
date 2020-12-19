@@ -1,14 +1,14 @@
 from env import read_env
 from log import logger
 import rds
-import sys
 import time
 from twitter import search
-
+import sys
 
 
 def scan():
-
+    tags = read_env('tags')
+    print(tags)
     tags = [
         "#openbanking", 
         "#remediation", 
@@ -23,12 +23,15 @@ def scan():
     ]
     data = search(tags)
 
-    if rds.run(data) == 0:
-        print("deu bom")
+
+    rds.run(data)
 
 
     
 if __name__ == "__main__":
-    logger.info('Starting Search.')
+    logger.info("msg='Starting search for tags.'")
+    start_time = time.time()
     scan()
-    logger.info('Done')
+    seconds = time.time() - start_time
+    logger.info(f"msg='Job done' exec_time={seconds:.2f}")
+    sys.exit()
