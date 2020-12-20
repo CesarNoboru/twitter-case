@@ -1,7 +1,7 @@
 import sys
 import logging
 
-logger = logging.getLogger("twitter-case-scan")
+logger = logging.getLogger("twitter-case-api")
 logger.setLevel(logging.INFO)
 consoleHandler = logging.StreamHandler(sys.stdout)
 consoleHandler.setLevel(logging.INFO)

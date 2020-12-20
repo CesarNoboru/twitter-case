@@ -1,37 +1,17 @@
-from env import read_env
+from env import read_tags
 from log import logger
 import rds
 import time
 from twitter import search
-import sys
+import os
 
-
-def scan():
-    tags = read_env('tags')
-    print(tags)
-    tags = [
-        "#openbanking", 
-        "#remediation", 
-        "#devops", 
-        "#sre", 
-        "#microservices", 
-        "#observability", 
-        "#oauth", 
-        "#metrics", 
-        "#logmonitoring", 
-        "#opentracing"
-    ]
-    data = search(tags)
-
-
-    rds.run(data)
-
-
-    
-if __name__ == "__main__":
+try:
     logger.info("msg='Starting search for tags.'")
     start_time = time.time()
-    scan()
+    tags = read_tags('TAGS')      
+    data = search(tags)
+    rds.run(data)
     seconds = time.time() - start_time
     logger.info(f"msg='Job done' exec_time={seconds:.2f}")
-    sys.exit()
+except Exception as e:
+    raise e

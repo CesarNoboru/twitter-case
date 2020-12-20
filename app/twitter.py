@@ -42,7 +42,7 @@ def search(query):
                 if 'location' in usr:
                     location = usr['location']
                 else:
-                    location = 'Unknown'
+                    location = ''
                 row = [
                     usr['id'],
                     usr['name'],
