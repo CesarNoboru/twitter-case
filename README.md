@@ -27,10 +27,10 @@
 
 
 ## Deploy:
-
-    ###### Requisitos:
+###### Requisitos:
     - Acesso programático a AWS com permissão para criar RDS Instance, Lambda Function, CloudWatch (Rules, Events, Log Groups, Dashboard), Secret Manager Secrets,  API Gateway, IAM (Roles, Policies)
     - Terraform
-
+    
+###### Deploy:
     Com usuário configurado com acesso programático via CLI execute o main.tf.
 
