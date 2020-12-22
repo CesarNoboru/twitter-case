@@ -313,5 +313,6 @@
     - Terraform
     
 ###### Deploy:
-    Com usuário configurado com acesso programático via CLI execute o main.tf.
+**NOT READY**
+    Com usuário configurado com acesso programático via CLI execute o main.tf
 
