@@ -4,35 +4,42 @@ import time
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 types = ['followers', 'hour', 'posts']
-
-bad_req = {
-    "Response" : 400,
-    "Error" : "Missing Parameters"
+msg = "Missing Parameters."
+response = {
+    "isBase64Encoded": 'false',
+    "statusCode": 400,
+    "headers": {},
+    "body": ''
 }
+
 
 def handler(event, context):
     try:
         logger.info("msg='Starting API.'")
         start_time = time.time()
         tag = None
-        if 'query' not in event:
+        if 'query' not in event['queryStringParameters']:
             logger.error("msg='Missing 'query' parameter.'")
-            return bad_req
-        if event['query'] not in types:
-            return bad_req
-        if event['query'] == 'posts':
-            if 'tag' not in event:
+            response['body'] = "msg='Missing 'query' parameter.'"
+            return response
+        query = event['queryStringParameters']['query']
+        if query not in types:
+            response['body'] = "msg='Missing 'query' parameter.'"
+            return response
+        if query == 'posts':
+            if 'tag' not in event['queryStringParameters']:
                 logger.error("msg='Query 'posts' without 'tag''")
-                return bad_req
-            tag = event['tag']
-            logger.info(f"msg='Query validated' query='{event['query']} tag='{tag}'")
-        query = rds.run(event['query'], tag)
+                response['body'] = "Query 'posts' without 'tag'"
+                return response
+            tag = event['queryStringParameters']['tag']
+            logger.info(f"msg='Query validated' query='{query} tag='{tag}'")
+        query = rds.run(query, tag)
         seconds = time.time() - start_time
         logger.info(f"msg='API done' exec_time={seconds:.2f}")
     except Exception as e:
         raise e
-    return {
-        "Response": 200,
-        "Query": query,
-        "ExecutionTime" : f"{seconds:.2f}"
-    }
+    logger.info(type(query))
+    response['statusCode'] = 200
+    response['body'] = query
+    logger.info(response)
+    return response
