@@ -1,16 +1,19 @@
 import requests
 import json
 import urllib.parse
-from log import logger
+import logging
 import time
-
+from secrets import get_secret
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 def search(query):
     total = 0
     tweets = []
     users = []
+    token = get_secret("twitter-bearer-token")['token']
     URL = "https://api.twitter.com/2/tweets/search/recent?query={}&tweet.fields=created_at,lang&max_results=100&expansions=author_id&user.fields=public_metrics,location"
     headers = {
-        'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAANUAKwEAAAAAqSfAa1p%2BYb%2Byfgc3Yo%2FC4efg8Yw%3DH8TFRh9WwZzkwsxwcyTJ8xd4qywTfn6JNFKKeCIMdGeISZWJWn'
+        'Authorization': token
     }
     dp_user = 0
     dp_tweet = 0

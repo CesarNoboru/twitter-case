@@ -1,9 +1,10 @@
-from log import logger
+import logging
 import pymysql
 import sys
 import time
 from secrets import get_secret
-
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 secrets = ''
 
 def panic_out(error):
@@ -69,7 +70,7 @@ def insert(cursor, list, type):
 def run(data):
 
     global secrets
-    secrets = get_secret()
+    secrets = get_secret("twitter-case-db-cred")
     logger.info(f"msg='Trying to connect to RDS' db_host='{secrets['host']}' db='{secrets['dbname']}' db_user='{secrets['username']}'")
     
     try:

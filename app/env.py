@@ -1,8 +1,9 @@
 import os
 import sys
 import dotenv
-from log import logger
-
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 def read_tags(name, default=None):

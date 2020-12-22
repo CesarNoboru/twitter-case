@@ -1,13 +1,11 @@
 import json
 import boto3
-import base64
 from botocore.exceptions import ClientError
-from log import logger
+import logging
 import sys
-
-def get_secret():
-    
-    secret_name = "twitter-case-db-cred"
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+def get_secret(secret_name):
     region_name = "us-east-1"
 
     session = boto3.session.Session()

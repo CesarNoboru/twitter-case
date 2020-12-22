@@ -1,8 +1,10 @@
 from env import read_tags
-from log import logger
+import logging
 import rds
 import time
 from twitter import search
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def handler(event, context):
     try:

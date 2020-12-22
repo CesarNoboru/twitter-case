@@ -1,9 +1,10 @@
 import json
 import boto3
-import base64
 from botocore.exceptions import ClientError
-from log import logger
+import logging
 import sys
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def get_secret():
     
