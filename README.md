@@ -10,7 +10,8 @@
 
         Ambas funçoes utilizam do Secrets Manager para gerenciar tanto o token do Twitter, quanto as credenciais do MySQL.
 ## Dashboard:
-    O Dashboard foi criado dentro do ClowdWatch, pode ser acessado através do link: https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Twitter-Case&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTI0OTYxNTQ5MTAyMSIsIlUiOiJ1cy1lYXN0LTFfVFhOdFg2eW55IiwiQyI6IjNxbzJnZmQwdnBqNmhlb2k2Z3E4aGRhYWo2IiwiSSI6InVzLWVhc3QtMTplOTgyMDY0MC1lMzA1LTRiNzctOTQ4YS04YjlmMTI1MzY2ZDkiLCJNIjoiUHVibGljIn0=
+    O Dashboard foi criado dentro do ClowdWatch, pode ser acessado publicamente:
+   https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Twitter-Case&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTI0OTYxNTQ5MTAyMSIsIlUiOiJ1cy1lYXN0LTFfVFhOdFg2eW55IiwiQyI6IjNxbzJnZmQwdnBqNmhlb2k2Z3E4aGRhYWo2IiwiSSI6InVzLWVhc3QtMTplOTgyMDY0MC1lMzA1LTRiNzctOTQ4YS04YjlmMTI1MzY2ZDkiLCJNIjoiUHVibGljIn0=
 
    ###### Metrics:
    ![Metrics](/img/Metrics.png)
@@ -23,7 +24,7 @@
 
 ## API:
    ###### Postman Collection:
-        https://www.getpostman.com/collections/90483281af41ad868d7a
+   https://www.getpostman.com/collections/90483281af41ad868d7a
         Configurado com a URL da minha app.
         A API utiliza dos parametros passados através da URL sendo eles:
 
