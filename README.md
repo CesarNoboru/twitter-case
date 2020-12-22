@@ -34,8 +34,10 @@
         - hour : Total de postagens agrupadas por hora.
         - posts : Total de postagens por idioma/país filtrado por tag.
    ###### tag= :
-   **Obrigatória quando usado 'posts'**. (tags: #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing )
         - Tag a ser filtrada com '#' a ser encodada pelo próprio postman
+
+   **Obrigatória quando usado 'posts'**
+        
    ###### Exemplo:
    https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   
    ###### Resposta:
