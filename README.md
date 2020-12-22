@@ -12,25 +12,26 @@
 ## Dashboard:
     O Dashboard foi criado dentro do ClowdWatch, pode ser acessado através do link: https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Twitter-Case&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTI0OTYxNTQ5MTAyMSIsIlUiOiJ1cy1lYXN0LTFfVFhOdFg2eW55IiwiQyI6IjNxbzJnZmQwdnBqNmhlb2k2Z3E4aGRhYWo2IiwiSSI6InVzLWVhc3QtMTplOTgyMDY0MC1lMzA1LTRiNzctOTQ4YS04YjlmMTI1MzY2ZDkiLCJNIjoiUHVibGljIn0=
 
-###### Metrics:
-    ![Metrics](/img/Metrics.png)
+   ###### Metrics:
+   ![Metrics](/img/Metrics.png)
+
         Métricas de execução das lambdas e da API Gateway. Além de métricas de leitura/escrita no RDS.
-###### Logs:
-    ![Logs](/img/Logs.png)
+   ###### Logs:
+   ![Logs](/img/Logs.png)
         Logs das lambdas e da API Gateway, são segmentadas com chave="valor" para facilitação de leitura por qualquer serviço de ingestão de logs.
 
 
 ## API:
-###### Postman Collection:
-   https://www.getpostman.com/collections/90483281af41ad868d7a
-   Configurado com a URL da minha app.
-   A API utiliza dos parametros passados através da URL sendo eles:
+   ###### Postman Collection:
+        https://www.getpostman.com/collections/90483281af41ad868d7a
+        Configurado com a URL da minha app.
+        A API utiliza dos parametros passados através da URL sendo eles:
 
-###### query= :
+   ###### query= :
         - followers :  5 Usuários com mais seguidores.
         - hour : Total de postagens agrupadas por hora.
         - posts : Total de postagens por idioma/país filtrado por tag.
-###### tag= :
+   ###### tag= :
         - Tag a ser filtrada com '#' a ser encodada pelo próprio postman, **obrigatória quando usado 'posts'**. (tags: #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing )
    
    ###### Exemplo:
