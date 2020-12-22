@@ -28,7 +28,7 @@
    ###### Exemplo:
    https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   
    ###### Resposta:
-   <`{
+   `<{
     "query": [
         {
             "count": 11,
@@ -291,7 +291,7 @@
             "location": "Boston, MA"
         }
       ]
-      }>
+      }>`
 
 
 ## Deploy:
