@@ -1,5 +1,5 @@
 # twitter-case
-##APP:
+## APP:
 
     <img>../img/Holistic</img>
 
@@ -9,10 +9,10 @@
         twitter-case-api: É a execução da API através do API Gateway que faz a query no RDS citado previamente.
 
         Ambas funçoes utilizam do Secrets Manager para gerenciar tanto o token do Twitter, quanto as credenciais do MySQL.
-##Dashboard:
+## Dashboard:
 
 
-##API:
+## API:
     Postman Collection: https://www.getpostman.com/collections/90483281af41ad868d7a
     Configurado com a URL da minha app.
     A API utiliza dos parametros passados através da URL sendo eles:
@@ -26,9 +26,9 @@
 
 
 
-##Deploy:
+## Deploy:
 
-    ###Requisitos:
+    ### Requisitos:
     - Acesso programático a AWS com permissão para criar RDS Instance, Lambda Function, CloudWatch (Rules, Events, Log Groups, Dashboard), Secret Manager Secrets,  API Gateway, IAM (Roles, Policies)
     - Terraform
 
