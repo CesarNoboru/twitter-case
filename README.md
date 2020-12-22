@@ -13,7 +13,7 @@
 
 
 ## API:
-    [Postman Collection](https://www.getpostman.com/collections/90483281af41ad868d7a)
+    Postman Collection: https://www.getpostman.com/collections/90483281af41ad868d7a
     Configurado com a URL da minha app.
     A API utiliza dos parametros passados através da URL sendo eles:
 
