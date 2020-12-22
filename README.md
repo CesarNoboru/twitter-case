@@ -1,7 +1,7 @@
 # twitter-case
 ## APP:
 
-   ![HolisticView](/img/Holistic)
+   ![HolisticView](/img/Holistic.png)
 
     App consiste basicamente em 2 lambdas:
         twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 5 minutos procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
