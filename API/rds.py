@@ -12,7 +12,7 @@ sql1 = """
 SELECT usr_name as name, usr_followers as followers
 FROM users 
 ORDER BY usr_followers DESC
-LIMIT 10;
+LIMIT 5;
 """
 sql2 = """
 SELECT DATE_FORMAT(twt_created, '%Y-%m-%d %T.%f') as creation_date, count(*) as count
@@ -47,12 +47,11 @@ def formatter(query, response):
     {
         "query" : [
                 
-        ],
-        "exec_time" : ''
+        ]
     }
     """
+    json_str = json.loads(form)
     try:
-        json_str = json.loads(form)
         if query == 'followers':
             qr = json_str['query']
             for line in response:
@@ -101,9 +100,9 @@ def run(query, tag):
         cursor.close()
         con.close()
         seconds = time.time() - start_time
-        response = formatter(query, response)
         logger.info(f"msg='Query done' query='{query}' tag='{tag}' exec_time='{seconds:.2f}'")
         logger.info(f"msg='Disconnected from  RDS' db_host='{secrets['host']}' db='{secrets['dbname']}' db_user='{secrets['username']}'")
     except Exception as e:
         panic_out(e)
+    response = formatter(query, response)
     return response

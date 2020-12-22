@@ -1,6 +1,7 @@
 import logging
 import rds
 import time
+import json
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 types = ['followers', 'hour', 'posts']
@@ -9,7 +10,7 @@ response = {
     "isBase64Encoded": 'false',
     "statusCode": 400,
     "headers": {},
-    "body": ''
+    "body": ""
 }
 
 
@@ -38,8 +39,7 @@ def handler(event, context):
         logger.info(f"msg='API done' exec_time={seconds:.2f}")
     except Exception as e:
         raise e
-    logger.info(type(query))
+    
     response['statusCode'] = 200
-    response['body'] = query
-    logger.info(response)
+    response['body'] = json.dumps(query)
     return response
