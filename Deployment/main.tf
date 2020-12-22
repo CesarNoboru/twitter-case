@@ -172,6 +172,9 @@ resource "aws_api_gateway_account" "apigw" {
 
 resource "aws_api_gateway_rest_api" "api" {
     name = "twitter-case-api"
+    endpoint_configuration {
+        types = ["REGIONAL"]
+    }
 }
 
 resource "aws_api_gateway_method" "method" {
@@ -232,7 +235,7 @@ resource "aws_api_gateway_method_response" "cors" {
   depends_on = [aws_api_gateway_method.cors]
   rest_api_id = aws_api_gateway_rest_api.api.id
   resource_id = aws_api_gateway_rest_api.api.root_resource_id
-  http_method = aws_api_gateway_method.cors.http_method
+  http_method = aws_api_gateway_method.method.http_method
   status_code = 200
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = true
@@ -242,18 +245,6 @@ resource "aws_api_gateway_method_response" "cors" {
   }
 }
 
-# resource "aws_api_gateway_integration_response" "cors" {
-#   depends_on = [aws_api_gateway_integration.cors, aws_api_gateway_method_response.cors]
-#   rest_api_id = aws_api_gateway_rest_api.api.id
-#   resource_id = aws_api_gateway_resource.cors.id
-#   http_method = aws_api_gateway_method.cors.http_method
-#   status_code = 200
-#   response_parameters = {
-#     "method.response.header.Access-Control-Allow-Origin" = "'*'",
-#     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type'",
-#     "method.response.header.Access-Control-Allow-Methods" = "'GET'" 
-#   }
-# }
 
 #testing END
 
@@ -316,7 +307,7 @@ EOF
 resource "aws_cloudwatch_event_rule" "scan_rule" {
     name                = "twitter-lambda-scan-sched"
     description         = "Scheduler for scan lambda"
-    schedule_expression = "rate(5 minute)"
+    schedule_expression = "rate(1 minute)"
 }
 resource "aws_cloudwatch_event_target" "scan_rule" {
     rule      = aws_cloudwatch_event_rule.scan_rule.name
