@@ -25,6 +25,7 @@
 ## API:
    ###### Postman Collection:
    https://www.getpostman.com/collections/90483281af41ad868d7a
+
         Configurado com a URL da minha app.
         A API utiliza dos parametros passados através da URL sendo eles:
 
@@ -33,8 +34,8 @@
         - hour : Total de postagens agrupadas por hora.
         - posts : Total de postagens por idioma/país filtrado por tag.
    ###### tag= :
-        - Tag a ser filtrada com '#' a ser encodada pelo próprio postman, **obrigatória quando usado 'posts'**. (tags: #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing )
-   
+   **Obrigatória quando usado 'posts'**. (tags: #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing )
+        - Tag a ser filtrada com '#' a ser encodada pelo próprio postman
    ###### Exemplo:
    https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   
    ###### Resposta:
