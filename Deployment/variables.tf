@@ -15,3 +15,15 @@ variable "region" {
     type        = string
     default     = "us-east-1"
 }
+
+variable "db_admin"{
+    description = "Admin user for RDS MySQL"
+    type        = string
+    default     = "admin" 
+}
+
+variable "db_pass"{
+    description = "Admin user's password for RDS MySQL"
+    type        = string
+    default     = "admin123" 
+}

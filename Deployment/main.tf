@@ -9,6 +9,7 @@ terraform {
 provider "aws" {
   region = var.region
 }
+data "aws_caller_identity" "current" {}
 
 resource "aws_iam_role" "apigw" {
   name = "twitter-case-role-apigw"
@@ -146,24 +147,32 @@ resource "aws_cloudwatch_log_group" "api_gw" {
   name = "/aws/api/api-gw"
 }
 
+resource "aws_lambda_layer_version" "twitter_layer" {
+  filename              = "./pkg/python.zip"
+  layer_name            = "twitter-case-layer"
+  compatible_runtimes   = ["python3.8"]
+}
+
 resource "aws_lambda_function" "lambda_scan" {
-  filename         = "~/twitter-case-scan.zip"
+  filename         = "./pkg/twitter-scan.zip"
   function_name    = "twitter-case-scan"
   role             = aws_iam_role.role_lambda.arn
   handler          = "main.handler"
   source_code_hash = filebase64sha256("~/twitter-case-scan.zip")
   timeout          = 60
   runtime          = "python3.8"
+  layers = [aws_lambda_layer_version.twitter_layer.arn]
 }
 
 resource "aws_lambda_function" "lambda_api" {
-  filename         = "~/twitter-case-api.zip"
+  filename         = "./pkg/twitter-api.zip"
   function_name    = "twitter-case-api"
   role             = aws_iam_role.role_lambda.arn
   handler          = "main.handler"
   source_code_hash = filebase64sha256("~/twitter-case-api.zip")
   timeout          = 60
   runtime          = "python3.8"
+  layers = [aws_lambda_layer_version.twitter_layer.arn]
 }
 
 resource "aws_api_gateway_account" "apigw" {
@@ -199,6 +208,20 @@ resource "aws_api_gateway_method" "main_method" {
       }
 }
 
+
+#test
+resource "aws_api_gateway_method_settings" "sett" {
+  rest_api_id = aws_api_gateway_rest_api.apigateway.id
+  stage_name  = aws_api_gateway_deployment.deployment.stage_name
+  method_path = "*/*"
+
+  settings {
+    metrics_enabled     = true
+    logging_level       = "INFO"
+    data_trace_enabled  = true
+  }
+}
+#test
 
 resource "aws_api_gateway_method_response" "main_method_200" {
   rest_api_id = aws_api_gateway_rest_api.apigateway.id
@@ -318,7 +341,6 @@ resource "aws_api_gateway_deployment" "deployment" {
   ]
 }
 
-
 resource "aws_db_instance" "db" {
   identifier          = "twitter-case-db"
   allocated_storage   = 20
@@ -326,10 +348,20 @@ resource "aws_db_instance" "db" {
   engine              = "mysql"
   instance_class      = "db.t2.micro"
   name                = "twitter_case_db"
-  username            = "admin"
-  password            = "admin123"
+  username            = var.db_admin
+  password            = var.db_pass
   skip_final_snapshot = true
   publicly_accessible = true
+}
+
+resource "aws_security_group_rule" "rds_access_rule" {
+  depends_on = [aws_db_instance.db]
+  type              = "ingress"
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  from_port         = 3306
+  to_port           = 3306
+  security_group_id = sort(aws_db_instance.db.vpc_security_group_ids)[0]
 }
 
 resource "aws_secretsmanager_secret" "rds_secret" {
@@ -494,7 +526,7 @@ resource "aws_cloudwatch_dashboard" "dash" {
 "height": 3,
 "properties": {
 "metrics": [
-[ "AWS/ApiGateway", "4XXError", "ApiName", "${aws_lambda_function.lambda_api.function_name}", { "color": "#d62728" } ],
+[ "AWS/ApiGateway", "4XXError", "ApiName", "${aws_api_gateway_rest_api.apigateway.name}", { "color": "#d62728" } ],
 [ ".", "Count", ".", ".", { "color": "#2ca02c" } ],
 [ ".", "Latency", ".", ".", { "color": "#1f77b4" } ],
 [ ".", "5XXError", ".", ".", { "stat": "Average", "period": 300, "yAxis": "left" } ],
@@ -510,17 +542,4 @@ resource "aws_cloudwatch_dashboard" "dash" {
 ]
 }
 EOF
-}
-
-
-output "RDS" {
-  value = aws_db_instance.db.address
-}
-
-output "CloudWatch" {
-  value = aws_cloudwatch_dashboard.dash.dashboard_name
-}
-
-output "API" {
-  value = aws_api_gateway_deployment.deployment.invoke_url
 }
