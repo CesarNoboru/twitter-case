@@ -18,7 +18,9 @@
         Ambas funçoes utilizam do Secrets Manager para gerenciar tanto o token do Twitter, quanto as credenciais do MySQL.
 
 ## Dashboard:
-    O Dashboard foi criado dentro do ClowdWatch, pode ser acessado publicamente:
+    O Dashboard foi criado dentro do ClowdWatch, pode ser acessado publicamente.
+**Importante**
+    Deixei alguns schedules para chamar as APIs para que sejam geradas métricas no dashboard.
    https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Twitter-Case&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTI0OTYxNTQ5MTAyMSIsIlUiOiJ1cy1lYXN0LTFfVFhOdFg2eW55IiwiQyI6IjNxbzJnZmQwdnBqNmhlb2k2Z3E4aGRhYWo2IiwiSSI6InVzLWVhc3QtMTplOTgyMDY0MC1lMzA1LTRiNzctOTQ4YS04YjlmMTI1MzY2ZDkiLCJNIjoiUHVibGljIn0=
 
    ###### Metrics:
