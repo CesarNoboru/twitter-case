@@ -17,4 +17,9 @@ def handler(event, context):
         logger.info(f"msg='Job done' exec_time={seconds:.2f}")
     except Exception as e:
         raise e
-    return 0
+    return {
+    "isBase64Encoded": 'false',
+    "statusCode": 200,
+    "headers": {},
+    "body": "Twitter Scan Done!"
+}
