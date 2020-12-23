@@ -3,12 +3,19 @@
 
    ![HolisticView](/img/Holistic.png)
 
-    App consiste basicamente em 2 lambdas:
-        twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 5 minutos procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
+        twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
+   
+   ###### Tabelas
+   ![Tables](/img/Tables.png)
 
-        twitter-case-api: É a execução da API através do API Gateway que faz a query no RDS citado previamente.
+   ###### Lambdas:
+
+        - twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
+
+        - twitter-case-api: É a execução da API através do API Gateway que faz a query no RDS citado previamente.
 
         Ambas funçoes utilizam do Secrets Manager para gerenciar tanto o token do Twitter, quanto as credenciais do MySQL.
+
 ## Dashboard:
     O Dashboard foi criado dentro do ClowdWatch, pode ser acessado publicamente:
    https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Twitter-Case&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTI0OTYxNTQ5MTAyMSIsIlUiOiJ1cy1lYXN0LTFfVFhOdFg2eW55IiwiQyI6IjNxbzJnZmQwdnBqNmhlb2k2Z3E4aGRhYWo2IiwiSSI6InVzLWVhc3QtMTplOTgyMDY0MC1lMzA1LTRiNzctOTQ4YS04YjlmMTI1MzY2ZDkiLCJNIjoiUHVibGljIn0=
