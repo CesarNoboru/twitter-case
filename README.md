@@ -3,7 +3,7 @@
 
    ![HolisticView](/img/Holistic.png)
 
-        twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
+        twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas procurando pelos ultimos 100 posts com as tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
    
    ###### Tabelas
    ![Tables](/img/Tables.png)
@@ -316,16 +316,12 @@
 
 ## Deploy:
 ###### Requisitos:
-    - Acesso programático a AWS com permissão para criar RDS Instance, Lambda Function, CloudWatch (Rules, Events, Log Groups, Dashboard), Secret Manager Secrets,  API Gateway, IAM (Roles, Policies)
+    - Acesso programático a AWS com permissão de administrador.
     - Terraform
+   **ESTE DEPLOY ALTERA O SG PADRÃO EM QUE O RDS FOR PROVISIONADO PARA QUE O RDS SEJA PUBLICO**
     
 ###### Deploy:
 **NOT READY**
-    Com usuário configurado com acesso programático via CLI execute o main.tf
-
-
-    TO DO : 
+    Com usuário configurado com acesso programático via CLI execute o terraform dentro do diretorio "Deployment"
     
-    Implement create table on scan
-    Implement VPC - subnet - etc on this env
 
