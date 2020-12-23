@@ -13,7 +13,8 @@
         - twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
 
         - twitter-case-api: É a execução da API através do API Gateway que faz a query no RDS citado previamente.
-
+        
+        Ambas utilizam uma Lambda Layer com os pacotes requests, pymysql, logger e dotenv.
         Ambas funçoes utilizam do Secrets Manager para gerenciar tanto o token do Twitter, quanto as credenciais do MySQL.
 
 ## Dashboard:
@@ -27,7 +28,6 @@
    ###### Logs:
    ![Logs](/img/Logs.png)
         Logs das lambdas e da API Gateway, são segmentadas com chave="valor" para facilitação de leitura por qualquer serviço de ingestão de logs.
-
 
 ## API:
    ###### Postman Collection:
@@ -322,4 +322,10 @@
 ###### Deploy:
 **NOT READY**
     Com usuário configurado com acesso programático via CLI execute o main.tf
+
+
+    TO DO : 
+    
+    Implement create table on scan
+    Implement VPC - subnet - etc on this env
 
