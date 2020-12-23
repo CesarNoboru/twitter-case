@@ -11,6 +11,22 @@ def panic_out(error):
     logger.error(f"msg='RDS error' error='{error}'")
     sys.exit(error)
 
+def clean(cursor):
+    logger.info("msg='Cleaning the tables.'")
+    sql = [
+        "DROP TABLE IF EXISTS `tweets`;",
+        "DROP TABLE IF EXISTS `users`;",
+        "CREATE TABLE users (usr_id VARCHAR(255) PRIMARY KEY, usr_name VARCHAR(255), usr_user VARCHAR(255), usr_followers INTEGER, usr_local VARCHAR(255));",
+        "CREATE TABLE tweets (twt_id VARCHAR(255) PRIMARY KEY, twt_user_id VARCHAR(255), twt_msg VARCHAR(255), twt_created DATETIME, twt_lang VARCHAR(255), FOREIGN KEY(twt_user_id) REFERENCES users(usr_id));"
+    ]
+    try:
+        for s in sql:
+            cursor.execute(s)
+    except Exception as e:
+        logger.error(f"msg='Error trying to clean tables' error='{e}'")
+        sys.exit()
+    return 0
+
 def insert(cursor, list, type):
     usr = """
             usr_id,
@@ -51,6 +67,7 @@ def insert(cursor, list, type):
         else:
             values = values + ', ' + value
     if type == "user":
+        clean(cursor)
         logger.info(f"msg='Inserting Users to RDS' db_host='{secrets['host']}' db='{secrets['dbname']}' db_user='{secrets['username']}'")
         sql = sql.format("users", usr, values)
     else:
