@@ -33,8 +33,9 @@
    ###### Postman Collection:
    https://www.getpostman.com/collections/90483281af41ad868d7a
 
-        Configurado com a URL da minha app.
-        A API utiliza dos parametros passados através da URL sendo eles:
+        Dentro da coleção existem 1 POST e 3 GETs configurados com a URL da minha app.
+        O POST deve ser rodado para fazer o scan independente do schedule de 1 a cada 12 horas (Ex. logo após o deploy)
+        As demais requisições GET são utilizadas conforme descrito abaixo:
 
    ###### query= :
         - followers :  5 Usuários com mais seguidores.
@@ -321,7 +322,19 @@
    **ESTE DEPLOY ALTERA O SG PADRÃO EM QUE O RDS FOR PROVISIONADO PARA QUE O RDS SEJA PUBLICO**
     
 ###### Deploy:
-**NOT READY**
+
     Com usuário configurado com acesso programático via CLI execute o terraform dentro do diretorio "Deployment"
-    
+    Opcionalmente pode-se alterar as variaveis através de um arquivo de variaveis para alterar:
+    region - Default : us-east-1
+    db_ser - Default : admin
+    db_passw - Default : admin123
+    bearer_token - Default : AAAAAAAAAAAAAAAAAAAAAHeYKwEAAAAAqtWmWFb%2BH3Rp1Yu0BW8YfM7yGKc%3Dof6VSt8LQua4KKEzEop6aI7TIOMXz8vLcsbwmA1NVsiJsChPXI
+    Os Outputs estão configurados para expor algumas informações relevantes do deploy:
+    account_id - Account ID onde foi feito o deploy
+    caller_arn - ARN do user que executou o deploy
+    caller_user - User que executou o deploy
+    RDS - Endereço do banco de dados criado
+    CloudWatch - Nome do Dashboard criado
+    API - URL da API
+    SG-Modified - Security Group que foi alterado com a inclusão da regra INGRESS TCP porta 3306 SOURCE "0.0.0.0/0"
 
