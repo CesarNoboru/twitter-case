@@ -329,6 +329,7 @@ resource "aws_db_instance" "db" {
   username            = "admin"
   password            = "admin123"
   skip_final_snapshot = true
+  publicly_accessible = true
 }
 
 resource "aws_secretsmanager_secret" "rds_secret" {
@@ -341,7 +342,7 @@ resource "aws_secretsmanager_secret_version" "rds_secret" {
   secret_string = <<EOF
 {
 "username": "${aws_db_instance.db.username}",
-"host": "${aws_db_instance.db.endpoint}",
+"host": "${aws_db_instance.db.address}",
 "password": "${aws_db_instance.db.password}",
 "dbname": "${aws_db_instance.db.name}"
 }  
@@ -358,7 +359,7 @@ resource "aws_secretsmanager_secret_version" "twt_secret" {
   secret_string = <<EOF
 {
 "token": "Bearer ${var.bearer_token}"
-
+}
 EOF
 }
 
@@ -513,7 +514,7 @@ EOF
 
 
 output "RDS" {
-  value = aws_db_instance.db.endpoint
+  value = aws_db_instance.db.address
 }
 
 output "CloudWatch" {
