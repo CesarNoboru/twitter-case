@@ -12,6 +12,7 @@ def get_secret(secret_name):
     )
 
     try:
+        logger.info(f"msg='Getting secrets from Secrets Manager' secret_name='{secret_name}'")
         get_secret_value_response = client.get_secret_value(
             SecretId=secret_name
         )
