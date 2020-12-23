@@ -7,7 +7,7 @@ variable "account_id" {
 variable "bearer_token" {
     description = "Token to be used when consuming from Twitter API"
     type        = string
-    default     = "AAAAAAAAAAAAAAAAAAAAANUAKwEAAAAAqSfAa1p%2BYb%2Byfgc3Yo%2FC4efg8Yw%3DH8TFRh9WwZzkwsxwcyTJ8xd4qywTfn6JNFKKeCIMdGeISZWJWn"
+    default     = "AAAAAAAAAAAAAAAAAAAAAHeYKwEAAAAAqtWmWFb%2BH3Rp1Yu0BW8YfM7yGKc%3Dof6VSt8LQua4KKEzEop6aI7TIOMXz8vLcsbwmA1NVsiJsChPXI"
 }
 
 variable "region" {
