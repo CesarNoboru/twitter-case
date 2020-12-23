@@ -9,12 +9,10 @@ logger.setLevel(logging.INFO)
 def get_secret():
     
     secret_name = "twitter-case-db-cred"
-    region_name = "us-east-1"
 
     session = boto3.session.Session()
     client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
+        service_name='secretsmanager'
     )
 
     try:
