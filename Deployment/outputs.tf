@@ -15,7 +15,7 @@ output "CloudWatch" {
   value = aws_cloudwatch_dashboard.dash.dashboard_name
 }
 output "API" {
-  value = aws_api_gateway_deployment.deployment.invoke_url
+  value = aws_api_gateway_stage.api.invoke_url
 }
  output "SG-Modified" {
    value = aws_security_group_rule.rds_access_rule.security_group_id

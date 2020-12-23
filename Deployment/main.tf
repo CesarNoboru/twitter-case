@@ -107,8 +107,8 @@ resource "aws_iam_role_policy" "policy" {
                 "logs:PutRetentionPolicy"
             ],
             "Resource": [
-                "arn:aws:secretsmanager:*:${var.account_id}:secret:*",
-                "arn:aws:logs:*:${var.account_id}:log-group:*"
+                "arn:aws:secretsmanager:*:${data.aws_caller_identity.current.account_id}:secret:*",
+                "arn:aws:logs:*:${data.aws_caller_identity.current.account_id}:log-group:*"
             ]
         },
         {
@@ -118,7 +118,7 @@ resource "aws_iam_role_policy" "policy" {
                 "logs:DeleteLogStream",
                 "logs:PutLogEvents"
             ],
-            "Resource": "arn:aws:logs:*:${var.account_id}:log-group:*:log-stream:*"
+            "Resource": "arn:aws:logs:*:${data.aws_caller_identity.current.account_id}:log-group:*:log-stream:*"
         },
         {
             "Sid": "Policy2",
@@ -195,6 +195,13 @@ resource "aws_lambda_permission" "apigw_access_lambda" {
   source_arn = "${aws_api_gateway_rest_api.apigateway.execution_arn}/*/*"
 }
 
+resource "aws_lambda_permission" "apigw_access_lambda_scan" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda_scan.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn = "${aws_api_gateway_rest_api.apigateway.execution_arn}/*/*"
+}
 
 resource "aws_api_gateway_method" "main_method" {
   rest_api_id   = aws_api_gateway_rest_api.apigateway.id
@@ -274,6 +281,23 @@ resource "aws_api_gateway_method" "options_method" {
   authorization = "NONE"
 }
 
+
+
+resource "aws_api_gateway_method" "post" {
+  rest_api_id   = aws_api_gateway_rest_api.apigateway.id
+  resource_id   = aws_api_gateway_rest_api.apigateway.root_resource_id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+resource "aws_api_gateway_integration" "post" {
+  rest_api_id               = aws_api_gateway_rest_api.apigateway.id
+  resource_id               = aws_api_gateway_rest_api.apigateway.root_resource_id
+  http_method               = aws_api_gateway_method.post.http_method
+  integration_http_method   = "POST"
+  type                      = "AWS_PROXY"
+  uri                       = aws_lambda_function.lambda_scan.invoke_arn
+
+}
 
 resource "aws_api_gateway_method_response" "options_response" {
   rest_api_id = aws_api_gateway_rest_api.apigateway.id
