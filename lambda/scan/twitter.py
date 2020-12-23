@@ -63,6 +63,7 @@ def search(query):
             logger.info(f"tweets={count_twt} users={count_usr} tag='{tag}' exc_time={seconds:.2f}")
         else:
             logger.warning(f"msg='No tweets for tag' tag='{tag}'")
+            seconds = time.time() - start_time
         total = total + seconds
     usr_total = len(users)
     twt_total = len(tweets)
