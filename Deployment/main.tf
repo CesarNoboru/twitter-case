@@ -208,11 +208,9 @@ resource "aws_api_gateway_method" "main_method" {
       }
 }
 
-
-#test
-resource "aws_api_gateway_method_settings" "sett" {
+resource "aws_api_gateway_method_settings" "set" {
   rest_api_id = aws_api_gateway_rest_api.apigateway.id
-  stage_name  = aws_api_gateway_deployment.deployment.stage_name
+  stage_name  = aws_api_gateway_stage.api.stage_name
   method_path = "*/*"
 
   settings {
@@ -221,8 +219,6 @@ resource "aws_api_gateway_method_settings" "sett" {
     data_trace_enabled  = true
   }
 }
-#test
-
 resource "aws_api_gateway_method_response" "main_method_200" {
   rest_api_id = aws_api_gateway_rest_api.apigateway.id
   resource_id = aws_api_gateway_rest_api.apigateway.root_resource_id
@@ -331,10 +327,20 @@ resource "aws_api_gateway_integration_response" "options_integration_response" {
   ]
 }
 
+resource "aws_api_gateway_stage" "api" {
+  stage_name    = "api"
+  rest_api_id   = aws_api_gateway_rest_api.apigateway.id
+  deployment_id = aws_api_gateway_deployment.deployment.id
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_gw.arn
+    format = "srcIP='$context.identity.sourceIp' caller='$context.identity.caller' user='$context.identity.user' method='$context.httpMethod' path='$context.resourcePath' protocol='$context.protocol' status='$context.status' req_id=$context.requestId"
+  }
+}
+
 resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.apigateway.id
-  stage_name  = "api"
-
+  
   depends_on = [
     aws_api_gateway_integration.method_integration,
     aws_api_gateway_integration.options_integration
