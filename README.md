@@ -2,8 +2,6 @@
 ## APP:
 
    ![HolisticView](/img/Holistic.png)
-
-        twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas procurando pelos ultimos 100 posts com as tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL.
    
    ###### Tabelas
    ![Tables](/img/Tables.png)
