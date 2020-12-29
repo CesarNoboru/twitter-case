@@ -15,12 +15,6 @@
         Ambas utilizam uma Lambda Layer com os pacotes requests, pymysql, logger e dotenv.
         Ambas funçoes utilizam do Secrets Manager para gerenciar tanto o token do Twitter, quanto as credenciais do MySQL.
 
-## Dashboard:
-    O Dashboard foi criado dentro do ClowdWatch, pode ser acessado publicamente.
-**Importante**
-    Deixei alguns schedules para chamar as APIs para que sejam geradas métricas no dashboard.
-   https://cloudwatch.amazonaws.com/dashboard.html?dashboard=Twitter-Case&context=eyJSIjoidXMtZWFzdC0xIiwiRCI6ImN3LWRiLTI0OTYxNTQ5MTAyMSIsIlUiOiJ1cy1lYXN0LTFfVFhOdFg2eW55IiwiQyI6IjNxbzJnZmQwdnBqNmhlb2k2Z3E4aGRhYWo2IiwiSSI6InVzLWVhc3QtMTplOTgyMDY0MC1lMzA1LTRiNzctOTQ4YS04YjlmMTI1MzY2ZDkiLCJNIjoiUHVibGljIn0=
-
    ###### Metrics:
    ![Metrics](/img/Metrics.png)
 
@@ -30,12 +24,9 @@
         Logs das lambdas e da API Gateway, são segmentadas com chave="valor" para facilitação de leitura por qualquer serviço de ingestão de logs.
 
 ## API:
-   ###### Postman Collection:
-   https://www.getpostman.com/collections/90483281af41ad868d7a
-
-        Dentro da coleção existem 1 POST e 3 GETs configurados com a URL da minha app.
-        O POST deve ser rodado para fazer o scan independente do schedule de 1 a cada 12 horas (Ex. logo após o deploy)
-        As demais requisições GET são utilizadas conforme descrito abaixo:
+   
+    Um POST com body vazio serve de trigger para o scan independente do schedule de 1 a cada 12 horas (Ex. logo após o deploy)
+    Os GETs são utilizados com os parametros passados na URL conforme descrito:
 
    ###### query= :
         - followers :  5 Usuários com mais seguidores.
@@ -47,7 +38,7 @@
    **Obrigatória quando usado 'posts'**
         
    ###### Exemplo:
-   https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   
+   https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   (API Inativa)
    ###### Resposta:
    `{
     "query": [
@@ -324,11 +315,13 @@
 ###### Deploy:
 
     Com usuário configurado com acesso programático via CLI execute o terraform dentro do diretorio "Deployment"
-    Opcionalmente pode-se alterar as variaveis através de um arquivo de variaveis para alterar:
+    Pode-se alterar as variaveis através de um arquivo de variaveis:
     region - Default : us-east-1
     db_ser - Default : admin
     db_passw - Default : admin123
-    bearer_token - Default : AAAAAAAAAAAAAAAAAAAAAHeYKwEAAAAAqtWmWFb%2BH3Rp1Yu0BW8YfM7yGKc%3Dof6VSt8LQua4KKEzEop6aI7TIOMXz8vLcsbwmA1NVsiJsChPXI
+    
+    Obrigatorio que seja fornecido o bearer_token (Token a ser utilizado na autenticação com a API do Twitter)
+
     Os Outputs estão configurados para expor algumas informações relevantes do deploy:
     account_id - Account ID onde foi feito o deploy
     caller_arn - ARN do user que executou o deploy

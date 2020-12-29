@@ -2,7 +2,6 @@
 variable "bearer_token" {
     description = "Token to be used when consuming from Twitter API"
     type        = string
-    default     = "AAAAAAAAAAAAAAAAAAAAAHeYKwEAAAAAqtWmWFb%2BH3Rp1Yu0BW8YfM7yGKc%3Dof6VSt8LQua4KKEzEop6aI7TIOMXz8vLcsbwmA1NVsiJsChPXI"
 }
 
 variable "region" {
