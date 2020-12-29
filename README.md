@@ -8,7 +8,7 @@
 
    ###### Lambdas:
 
-        - twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas, ou através do POST na API procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL. A cada scan, os dados anteriores são descartados e uma nova escrita é feita.
+        - twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas, ou através do POST na API procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL. A cada scan, os dados anteriores são descartados e uma nova escrita é feita. As tags podem ser alteradas através de uma variavel de ambiente chamada TAGS. Ex: TAGS='#valor1,#valor2,#valor3'.
 
         - twitter-case-api: É a execução da API através do API Gateway que faz a query no RDS citado previamente.
         
