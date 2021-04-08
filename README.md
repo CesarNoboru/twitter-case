@@ -1,44 +1,72 @@
 # twitter-case
+
+## Requisites:
+
+    1- Create an application to collect the last Twitter posts for a given hashtag.
+
+    2- Collect and persist the information in a database for the following hashtags:
+        #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing
+
+    3- Sumarize and persist the data so you can retrieve the following information:
+        Top 5 users from the collected sample with more followers
+        Amount of posts grouped by hour disregarding the hashtag
+        Amount of posts per hashtag and language/country
+
+    4- Create an REST API that enables the conspumtion of the items mentioned above. The API should expose exection metrics.
+
+    5- Create a Postman Collection for the created API.
+
+    6- Send the app logs to a logging tool and create queries that shows real time events.
+
+    7- Use a infrastructure monitoring tool and create dashboards that shows amount of executions, latency, and errors in real time.
+
+    8- Publish the project on GitHub and use README.md to document the following:
+        Project documentation
+        API
+        Architecture
+        Deployment
+        Logs 
+        Dashboards
+        
 ## APP:
 
    ![HolisticView](/img/Holistic.png)
    
-   ###### Tabelas
+   ###### RDS Tables
    ![Tables](/img/Tables.png)
 
-   ###### Lambdas:
+   ###### Lambda:
 
-        - twitter-case-scan: Que é executada através de uma regra do EventBridge a cada 12 horas, ou através do POST na API procurando pelas tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing e guardando em 2 tabelas em um RDS - MySQL. A cada scan, os dados anteriores são descartados e uma nova escrita é feita. As tags podem ser alteradas através de uma variavel de ambiente chamada TAGS. Ex: TAGS='#valor1,#valor2,#valor3'.
+        - twitter-case-scan: Called by an EventBridge rule (once every 12 hours) or by a POST request. It queries Twitter looking for the tags #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, and #opentracing by default, this can be changed using Lambda environment variable "TAG". The result is persisted in a RDS instance overwriting the last result.
+        - twitter-case-api: Queries the previous mentioned RDS instance, called by API Gateway.
 
-        - twitter-case-api: É a execução da API através do API Gateway que faz a query no RDS citado previamente.
+        Both uses a Lambda Layer with requests, pymysql, logger, and dotenv packages.
+        Both uses Secrets Manager to manage Twitter token and MySQL credentials.
         
-        Ambas utilizam uma Lambda Layer com os pacotes requests, pymysql, logger e dotenv.
-        Ambas funçoes utilizam do Secrets Manager para gerenciar tanto o token do Twitter, quanto as credenciais do MySQL.
-
    ###### Metrics:
    ![Metrics](/img/Metrics.png)
 
-        Métricas de execução das lambdas e da API Gateway. Além de métricas de leitura/escrita no RDS.
+        Lambda and API Gateway execution metrics, and read/write for RDS instance. 
    ###### Logs:
    ![Logs](/img/Logs.png)
-        Logs das lambdas e da API Gateway, são segmentadas com chave="valor" para facilitação de leitura por qualquer serviço de ingestão de logs.
+        Lambda and API Gateway logs using "Key=value" pattern to facilitate the ingestion on any kind of logging tool.
 
 ## API:
    
-    Um POST com body vazio serve de trigger para o scan independente do schedule de 1 a cada 12 horas (Ex. logo após o deploy)
-    Os GETs são utilizados com os parametros passados na URL conforme descrito:
+    A POST call with an empty body triggers the scan disregarding the EventBridge rule.
+    GET calls are used with the following parameters:
 
    ###### query= :
-        - followers :  5 Usuários com mais seguidores.
-        - hour : Total de postagens agrupadas por hora.
-        - posts : Total de postagens por idioma/país filtrado por tag.
+        - followers :  Top 5 users from the collected sample with more followers
+        - hour : Amount of posts grouped by hour disregarding the hashtag
+        - posts : Amount of posts per hashtag and language/country
    ###### tag= :
-        - Tag a ser filtrada com '#' a ser encodada pelo próprio postman
+        - Hashtag to filter. Use with '#' to be encoded by Postman.
 
-   **Obrigatória quando usado 'posts'**
+   **Mandatory for 'query=posts'**
         
    ###### Exemplo:
-   https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   (API Inativa)
+   https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   (INACTIVE)
    ###### Resposta:
    `{
     "query": [
@@ -306,28 +334,29 @@
       }`
 
 
-## Deploy:
-###### Requisitos:
-    - Acesso programático a AWS com permissão de administrador.
+## Deployment:
+###### Requisites:
+    - Twitter API token
+    - Programmatic AWS credentials with admin privileges.
     - Terraform
-   **ESTE DEPLOY ALTERA O SG PADRÃO EM QUE O RDS FOR PROVISIONADO PARA QUE O RDS SEJA PUBLICO**
+   **THIS DEPLOYMENT ADDS RULES TO YOUR DEFAULT SECURITY GROUP TO EXPOSE RDS AS PUBLIC**
     
 ###### Deploy:
 
-    Com usuário configurado com acesso programático via CLI execute o terraform dentro do diretorio "Deployment"
-    Pode-se alterar as variaveis através de um arquivo de variaveis:
-    region - Default : us-east-1
-    db_ser - Default : admin
-    db_passw - Default : admin123
+    Execute Terraform inside "Deployment" directory
+    It's possible to change values with a variables file:
+        region - Default : us-east-1
+        db_ser - Default : admin
+        db_passw - Default : admin123
     
-    Obrigatorio que seja fornecido o bearer_token (Token a ser utilizado na autenticação com a API do Twitter)
+    It's mandatory to provide a 'bearer_token' value with the Twitter API token from your account
 
-    Os Outputs estão configurados para expor algumas informações relevantes do deploy:
-    account_id - Account ID onde foi feito o deploy
-    caller_arn - ARN do user que executou o deploy
-    caller_user - User que executou o deploy
-    RDS - Endereço do banco de dados criado
-    CloudWatch - Nome do Dashboard criado
-    API - URL da API
-    SG-Modified - Security Group que foi alterado com a inclusão da regra INGRESS TCP porta 3306 SOURCE "0.0.0.0/0"
+    Outputs ate set to expose some relevant deployment informations:
+        account_id - Account ID from the account where the app was deployed
+        caller_arn - User's ARN from who executed the deployment
+        caller_user - User who executed the deployment
+        RDS - Database address
+        CloudWatch - Dashboard name
+        API - API's URL
+        SG-Modified - Security Group modified with the rule "INGRESS TCP port 3306 SOURCE '0.0.0.0/0'"
 
