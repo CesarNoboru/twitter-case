@@ -348,8 +348,8 @@
     Execute Terraform inside "Deployment" directory
     It's possible to change values with a variables file:
         region - Default : us-east-1
-        db_ser - Default : admin
-        db_passw - Default : admin123
+        db_admin - Default : admin
+        db_pass - Default : admin123
     
     It's mandatory to provide a 'bearer_token' value with the Twitter API token from your account
 
