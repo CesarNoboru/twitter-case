@@ -2,7 +2,7 @@
 
 ## Requisites:
 
-    1- Create an application to collect the last Twitter posts for a given hashtag.
+    1- Create an application to collect the 100 last Twitter posts for a given hashtag.
 
     2- Collect and persist the information in a database for the following hashtags:
         #openbanking, #remediation, #devops, #sre, #microservices, #observability, #oauth, #metrics, #logmonitoring, #opentracing
@@ -65,10 +65,11 @@
 
    **Mandatory for 'query=posts'**
         
-   ###### Exemplo:
+   ###### Example:
    https://uj9dxh1hgk.execute-api.us-east-1.amazonaws.com/api?query=posts&tag=%23sre   (INACTIVE)
-   ###### Resposta:
-   `{
+   ###### Response:
+   ```
+   {
     "query": [
         {
             "count": 11,
@@ -331,7 +332,8 @@
             "location": "Boston, MA"
         }
       ]
-      }`
+      }
+      ```
 
 
 ## Deployment:
